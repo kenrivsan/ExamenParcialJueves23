@@ -70,6 +70,18 @@
                     <td>@revista2.AnioPubli</td>
                     <td>@revista2.Volumen</td>
                     <td>@revista2.Numero</td>
+                    <td>
+                        <button class="btn btn-warning"
+                         @onclick="@(() => NavigationManager.NavigateTo($"/Edicion-Revistas/{revista2.Titulo}"))">
+                         Editar   
+                         </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger"
+                            @onclick="@(() => Borrar(revista2.Titulo))">
+                            Eliminar
+                        </button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -89,7 +101,12 @@
     protected override async Task OnInitializedAsync()
     {  //La primera vez que se corre poner en comentarios, pues como no existen datos
        //convierta la lista catedraticos en null
-       //revistas = await localStorage.GetItemAsync<List<clsRevistas>>("JsonLibros");
+       revistas = await localStorage.GetItemAsync<List<clsRevistas>>("JsonLibros");
+    }
+    protected async Task Borrar(string Eliminado)
+    {
+        revistas.Remove(revistas.First(c => c.Titulo == Eliminado));
+        await localStorage.SetItemAsync("JsonLibros", revistas);
     }
 
 }
